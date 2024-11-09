@@ -9,6 +9,7 @@ use App\Models\Guest;
 use App\Services\CountryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class GuestController extends Controller
@@ -17,9 +18,9 @@ class GuestController extends Controller
         protected CountryService $countryService,
     ) {}
 
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        return GuestResource::collection(Guest::all());
     }
 
     public function store(CreateGuestData $data): JsonResponse

@@ -2,6 +2,7 @@
 
 namespace App\ValueObjects;
 
+use App\Exceptions\ValueException;
 use App\ValueObjects\Traits\UseCastable;
 use Spatie\LaravelData\Casts\Castable;
 use Symfony\Component\Intl\Countries;
@@ -17,7 +18,7 @@ class Country implements Castable
         $country = strtoupper($country);
 
         if (! Countries::exists($country)) {
-            throw new \TypeError('Некорректный код страны');
+            ValueException::incorrectCountryCode();
         }
 
         $this->country = $country;

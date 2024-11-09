@@ -2,6 +2,7 @@
 
 namespace App\ValueObjects;
 
+use App\Exceptions\ValueException;
 use App\ValueObjects\Traits\UseCastable;
 use Spatie\LaravelData\Casts\Castable;
 
@@ -20,7 +21,7 @@ class Phone implements Castable
         }
 
         if (strlen($phone) !== 11) {
-            throw new \TypeError('Невалидный номер телефона');
+            ValueException::incorrectPhone();
         }
 
         $this->phone = $phone;

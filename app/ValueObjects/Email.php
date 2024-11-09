@@ -2,6 +2,7 @@
 
 namespace App\ValueObjects;
 
+use App\Exceptions\ValueException;
 use App\ValueObjects\Traits\UseCastable;
 use Spatie\LaravelData\Casts\Castable;
 
@@ -14,8 +15,9 @@ class Email implements Castable
     public function __construct(string $email)
     {
         if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException('Недопустимый email адрес');
+            ValueException::incorrectEmail();
         }
+
         $this->email = mb_strtolower($email);
     }
 

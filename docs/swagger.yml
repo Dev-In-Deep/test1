@@ -41,7 +41,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Guest'
-        '400':
+        '422':
           description: Неверные входные данные
         '409':
           description: Конфликт данных (уникальные поля нарушены)

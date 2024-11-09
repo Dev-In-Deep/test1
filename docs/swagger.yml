@@ -1,0 +1,231 @@
+openapi: 3.0.3
+info:
+  title: API для Управления Гостями
+  description: API для создания, чтения, обновления и удаления информации о гостях.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/api/v1
+    description: Основной сервер API
+
+paths:
+  /guests:
+    get:
+      summary: Получить список всех гостей
+      tags:
+        - Гости
+      responses:
+        '200':
+          description: Список гостей успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Guest'
+        '500':
+          description: Внутренняя ошибка сервера
+    post:
+      summary: Создать нового гостя
+      tags:
+        - Гости
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestCreate'
+      responses:
+        '201':
+          description: Гость успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guest'
+        '400':
+          description: Неверные входные данные
+        '409':
+          description: Конфликт данных (уникальные поля нарушены)
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /guests/{id}:
+    get:
+      summary: Получить гостя по идентификатору
+      tags:
+        - Гости
+      parameters:
+        - name: id
+          in: path
+          description: Уникальный идентификатор гостя
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Гость найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guest'
+        '404':
+          description: Гость не найден
+        '500':
+          description: Внутренняя ошибка сервера
+    put:
+      summary: Обновить информацию о госте
+      tags:
+        - Гости
+      parameters:
+        - name: id
+          in: path
+          description: Уникальный идентификатор гостя
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestUpdate'
+      responses:
+        '200':
+          description: Гость успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guest'
+        '400':
+          description: Неверные входные данные
+        '404':
+          description: Гость не найден
+        '409':
+          description: Конфликт данных (уникальные поля нарушены)
+        '500':
+          description: Внутренняя ошибка сервера
+    delete:
+      summary: Удалить гостя
+      tags:
+        - Гости
+      parameters:
+        - name: id
+          in: path
+          description: Уникальный идентификатор гостя
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Гость успешно удален
+        '404':
+          description: Гость не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+components:
+  schemas:
+    Guest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор гостя
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        firstName:
+          type: string
+          description: Имя гостя
+          example: "Иван"
+        lastName:
+          type: string
+          description: Фамилия гостя
+          example: "Иванов"
+        email:
+          type: string
+          format: email
+          description: Электронная почта гостя
+          example: "ivan.ivanov@example.com"
+        phone:
+          type: string
+          description: Номер телефона гостя
+          example: "+7-999-123-45-67"
+        country:
+          type: string
+          description: Страна проживания гостя
+          example: "Россия"
+      required:
+        - id
+        - firstName
+        - lastName
+        - phone
+      additionalProperties: false
+
+    GuestCreate:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Имя гостя
+          example: "Иван"
+        lastName:
+          type: string
+          description: Фамилия гостя
+          example: "Иванов"
+        email:
+          type: string
+          format: email
+          description: Электронная почта гостя
+          example: "ivan.ivanov@example.com"
+        phone:
+          type: string
+          description: Номер телефона гостя
+          example: "+7-999-123-45-67"
+        country:
+          type: string
+          description: Страна проживания гостя
+          example: "Россия"
+      required:
+        - firstName
+        - lastName
+        - phone
+      additionalProperties: false
+
+    GuestUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Имя гостя
+          example: "Иван"
+        lastName:
+          type: string
+          description: Фамилия гостя
+          example: "Иванов"
+        email:
+          type: string
+          format: email
+          description: Электронная почта гостя
+          example: "ivan.ivanov@example.com"
+        phone:
+          type: string
+          description: Номер телефона гостя
+          example: "+7-999-123-45-67"
+        country:
+          type: string
+          description: Страна проживания гостя
+          example: "Россия"
+      required: []
+      additionalProperties: false
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Гости
+    description: Операции по управлению гостями

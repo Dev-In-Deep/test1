@@ -33,6 +33,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Guest extends Model
 {
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'phone',
+        'email',
+        'country',
+        'country',
+    ];
+
     protected $casts = [
         'phone' => PhoneCast::class,
         'email' => EmailCast::class,

@@ -2,8 +2,13 @@
 
 namespace App\ValueObjects;
 
-class Email
+use App\ValueObjects\Traits\UseCastable;
+use Spatie\LaravelData\Casts\Castable;
+
+class Email implements Castable
 {
+    use UseCastable;
+
     protected string $email;
 
     public function __construct(string $email)

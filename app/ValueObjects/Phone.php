@@ -2,8 +2,13 @@
 
 namespace App\ValueObjects;
 
-class Phone
+use App\ValueObjects\Traits\UseCastable;
+use Spatie\LaravelData\Casts\Castable;
+
+class Phone implements Castable
 {
+    use UseCastable;
+
     protected string $phone;
 
     public function __construct(string $phone)

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\DTO\CreateGuestData;
 use App\Http\Resources\GuestResource;
 use App\Models\Guest;
 use App\Services\CountryService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class GuestController extends Controller
 {
@@ -18,9 +21,17 @@ class GuestController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(CreateGuestData $data): JsonResponse
     {
-        //
+        $newGuest = new Guest;
+        $newGuest->fill($data->toArray());
+        $newGuest->uuid = Str::uuid();
+
+        $newGuest->save();
+
+        return response()
+            ->json()
+            ->setStatusCode(201);
     }
 
     public function show(string $uuid): GuestResource

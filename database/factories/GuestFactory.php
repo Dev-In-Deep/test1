@@ -31,4 +31,22 @@ class GuestFactory extends Factory
             'country' => new Country(fake()->countryCode),
         ];
     }
+
+    public function toCreate(bool $withoutCountry = false): array
+    {
+        $guest = $this->make();
+
+        $createFields = [
+            'firstName' => $guest->first_name,
+            'lastName' => $guest->last_name,
+            'email' => $guest->email->value(),
+            'phone' => $guest->phone->value(),
+        ];
+
+        if (! $withoutCountry) {
+            $createFields['country'] = $guest->country->value();
+        }
+
+        return $createFields;
+    }
 }

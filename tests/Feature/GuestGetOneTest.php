@@ -2,13 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\ValueObjects\Country;
 use Database\Factories\GuestFactory;
 
 use function Pest\Laravel\getJson;
 
 it('Получение гостя', function (string $countryCode, string $countryName) {
     $guest = GuestFactory::new()
-        ->state(['country' => $countryCode])
+        ->state(['country' => new Country($countryCode)])
         ->create();
 
     $answer = getJson(route('guests.show', ['guest' => $guest->uuid]));
@@ -18,8 +19,8 @@ it('Получение гостя', function (string $countryCode, string $count
             'uuid' => $guest->uuid,
             'firstName' => $guest->first_name,
             'lastName' => $guest->last_name,
-            'email' => $guest->email,
-            'phone' => $guest->phone,
+            'email' => $guest->email->value(),
+            'phone' => $guest->phone->value(),
             'country' => $countryName,
         ]);
 })->with([

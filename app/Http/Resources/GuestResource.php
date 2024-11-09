@@ -26,9 +26,9 @@ class GuestResource extends JsonResource
             'uuid' => $this->uuid,
             'firstName' => $this->first_name,
             'lastName' => $this->last_name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'country' => $this->countryService->getCountryName($this->country),
+            'email' => $this->email->value(),
+            'phone' => $this->phone->value(),
+            'country' => $this->countryService->getCountryName($this->country->value()),
         ];
     }
 }

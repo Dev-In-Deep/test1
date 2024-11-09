@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
+use App\Casts\CountryCast;
+use App\Casts\EmailCast;
+use App\Casts\PhoneCast;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
- *
  * @property string $uuid
  * @property string $first_name
  * @property string $last_name
- * @property string $phone
- * @property string $email
- * @property string $country
+ * @property \App\ValueObjects\Phone $phone
+ * @property \App\ValueObjects\Email $email
+ * @property \App\ValueObjects\Country $country
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest query()
@@ -26,9 +28,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUuid($value)
+ *
  * @mixin \Eloquent
  */
 class Guest extends Model
 {
-    //
+    protected $casts = [
+        'phone' => PhoneCast::class,
+        'email' => EmailCast::class,
+        'country' => CountryCast::class,
+    ];
 }

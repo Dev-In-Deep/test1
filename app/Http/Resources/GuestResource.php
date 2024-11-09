@@ -23,12 +23,12 @@ class GuestResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "uuid" => $this->uuid,
-            "firstName" => $this->first_name,
-            "lastName" => $this->last_name,
-            "email" => $this->email,
-            "phone" => $this->phone,
-            "country" => $this->countryService->getCountryName($this->country),
+            'uuid' => $this->uuid,
+            'firstName' => $this->first_name,
+            'lastName' => $this->last_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'country' => $this->countryService->getCountryName($this->country),
         ];
     }
 }

@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 class GuestController extends Controller
 {
     public function __construct(
-        protected CountryService  $countryService,
-    )
-    {
-    }
+        protected CountryService $countryService,
+    ) {}
 
     public function index()
     {

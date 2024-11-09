@@ -47,9 +47,7 @@ class GuestController extends Controller
 
     public function show(string $uuid): JsonResponse
     {
-        $guest = Guest::query()
-            ->where('uuid', $uuid)
-            ->firstOrFail();
+        $guest = Guest::query()->findOrFail($uuid);
 
         return $this->resourceResponse($guest);
     }
@@ -59,9 +57,13 @@ class GuestController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(string $uuid): JsonResponse
     {
-        //
+        $guest = Guest::query()->findOrFail($uuid);
+
+        $guest->delete();
+
+        return response()->json([], 204);
     }
 
     protected function resourceResponse(Guest $guest, int $code = 200): JsonResponse

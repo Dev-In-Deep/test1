@@ -33,6 +33,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Guest extends Model
 {
+    public $incrementing = false;
+
+    protected $primaryKey = 'uuid';
+
+    protected $keyType = 'string';
+
     protected $fillable = [
         'first_name',
         'last_name',

@@ -19,10 +19,10 @@ class GuestFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->uuid,
+            'uuid' => fake()->uuid,
             'first_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'phone' => fake()->phoneNumber,
+            'phone' => (string) fake()->numberBetween(7_000_000_00_0,7_999_999_999_9),
             'email' => fake()->email,
             'country' => fake()->countryCode,
         ];

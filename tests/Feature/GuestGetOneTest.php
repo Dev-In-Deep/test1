@@ -5,20 +5,23 @@ namespace Tests\Feature;
 use Database\Factories\GuestFactory;
 use function Pest\Laravel\getJson;
 
-it("Получение гостя", function () {
+it("Получение гостя", function (string $countryCode, string $countryName) {
     $guest = GuestFactory::new()
-        ->state(["country" => "ru"])
+        ->state(["country" => $countryCode])
         ->create();
 
-    $answer = getJson(route("guests.show"), ["guest" => $guest->id]);
+    $answer = getJson(route("guests.show", ["guest" => $guest->uuid]));
 
     $answer->assertOk()
-        ->assertJsonStructure([
-            "id" => $guest->id,
+        ->assertJson([
+            "uuid" => $guest->uuid,
             "firstName" => $guest->first_name,
             "lastName" => $guest->last_name,
             "email" => $guest->email,
             "phone" => $guest->phone,
-            "country" => "Россия",
+            "country" => $countryName,
         ]);
-});
+})->with([
+    ["ru", "Россия"],
+    ["fr", "Франция"],
+]);

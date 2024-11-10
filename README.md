@@ -9,10 +9,11 @@ docker run --rm \
     laravelsail/php83-composer:latest \
     composer install --ignore-platform-reqs
 ```
-- Запуск докера `./vendor/bin/sail up` или `docker compose up`
+- Запуск докера `./vendor/bin/sail up`
+- Запуск миграций `./vendor/bin/sail php artisan  migrate`
 
 # Тесты
-Запуск тестов `php artisan test`
+Запуск тестов `./vendor/bin/sail php artisan test`
 
 # Документация
 /docs/swagger.yml

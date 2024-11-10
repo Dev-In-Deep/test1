@@ -188,6 +188,7 @@ components:
         - firstName
         - lastName
         - phone
+        - email
       additionalProperties: false
 
     GuestUpdate:
@@ -214,17 +215,12 @@ components:
           type: string
           description: Страна проживания гостя
           example: "Россия"
-      required: []
+      required:
+        - firstName
+        - lastName
+        - phone
+        - email
       additionalProperties: false
-
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
-
-security:
-  - ApiKeyAuth: []
 
 tags:
   - name: Гости

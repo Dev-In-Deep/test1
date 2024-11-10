@@ -17,17 +17,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUuid($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest getByPhoneOrEmail(string $phone, string $email)
+ * @method static \App\Models\GuestBuilder<static>|Guest getByUuidAndPhoneOrEmail(string $phone, string $email, string $uuid)
+ * @method static \App\Models\GuestBuilder<static>|Guest newModelQuery()
+ * @method static \App\Models\GuestBuilder<static>|Guest newQuery()
+ * @method static \App\Models\GuestBuilder<static>|Guest query()
+ * @method static \App\Models\GuestBuilder<static>|Guest whereCountry($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereCreatedAt($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereEmail($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereFirstName($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereLastName($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest wherePhone($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereUpdatedAt($value)
+ * @method static \App\Models\GuestBuilder<static>|Guest whereUuid($value)
  *
  * @mixin \Eloquent
  */
@@ -53,4 +55,9 @@ class Guest extends Model
         'email' => EmailCast::class,
         'country' => CountryCast::class,
     ];
+
+    public function newEloquentBuilder($query): GuestBuilder
+    {
+        return new GuestBuilder($query);
+    }
 }

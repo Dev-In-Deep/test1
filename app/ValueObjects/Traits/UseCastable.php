@@ -3,6 +3,7 @@
 namespace App\ValueObjects\Traits;
 
 use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
@@ -20,9 +21,6 @@ trait UseCastable
         {
             public function __construct(protected string $valueObject) {}
 
-            /**
-             * @param  CreationContext<mixed>  $context
-             */
             public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed
             {
                 return new $this->valueObject($value);

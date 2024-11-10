@@ -36,17 +36,23 @@ class GuestFactory extends Factory
     {
         $guest = $this->make();
 
-        $createFields = [
+        $createFields = GuestFactory::modelToData($guest);
+
+        if ($withoutCountry) {
+            unset($createFields['country']);
+        }
+
+        return $createFields;
+    }
+
+    public static function modelToData(Guest $guest): array
+    {
+        return [
             'firstName' => $guest->first_name,
             'lastName' => $guest->last_name,
             'email' => $guest->email->value(),
             'phone' => $guest->phone->value(),
+            'country' => $guest->country->value(),
         ];
-
-        if (! $withoutCountry) {
-            $createFields['country'] = $guest->country->value();
-        }
-
-        return $createFields;
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\GuestException;
-use App\Http\DTO\CreateGuestData;
+use App\Actions\CreateGuestAction;
+use App\Actions\UpdateGuestAction;
+use App\Http\DTO\CreateUpdateGuestData;
 use App\Http\Resources\GuestResource;
 use App\Models\Guest;
 use App\Services\CountryService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
@@ -23,29 +23,6 @@ class GuestController extends Controller
         return GuestResource::collection(Guest::all());
     }
 
-    public function store(CreateGuestData $data): JsonResponse
-    {
-        if (is_null($data->country)) {
-            $data->country = $this->countryService->getCountryByPhone($data->phone);
-        }
-
-        $existingGuest = Guest::query()
-            ->where('phone', $data->phone->value())
-            ->orWhere('email', $data->email->value())
-            ->first();
-
-        if (! is_null($existingGuest)) {
-            GuestException::guestExist();
-        }
-
-        $newGuest = new Guest;
-        $newGuest->fill($data->toArray());
-        $newGuest->uuid = Str::uuid();
-        $newGuest->save();
-
-        return $this->resourceResponse($newGuest, 201);
-    }
-
     public function show(string $uuid): JsonResponse
     {
         $guest = Guest::query()->findOrFail($uuid);
@@ -53,9 +30,14 @@ class GuestController extends Controller
         return $this->resourceResponse($guest);
     }
 
-    public function update(Request $request, string $id)
+    public function store(CreateUpdateGuestData $data, CreateGuestAction $action): JsonResponse
     {
-        //
+        return $this->resourceResponse($action($data, Str::uuid()), 201);
+    }
+
+    public function update(CreateUpdateGuestData $data, string $uuid, UpdateGuestAction $action): JsonResponse
+    {
+        return $this->resourceResponse($action($data, $uuid));
     }
 
     public function destroy(string $uuid): JsonResponse

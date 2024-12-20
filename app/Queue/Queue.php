@@ -13,7 +13,7 @@ interface Queue
      * @param mixed $item Элемент, который нужно добавить.
      * @return void
      */
-    public function enqueue($item): void;
+    public function enqueue(Job $item): void;
 
     /**
      * Удаляет элемент из начала очереди и возвращает его.
@@ -21,7 +21,7 @@ interface Queue
      * @return mixed Элемент, удаленный из начала очереди.
      * @throws UnderflowException Если очередь пуста.
      */
-    public function dequeue();
+    public function dequeue() : Job;
 
     /**
      * Возвращает элемент из начала очереди без его удаления.
@@ -29,7 +29,7 @@ interface Queue
      * @return mixed Элемент из начала очереди.
      * @throws UnderflowException Если очередь пуста.
      */
-    public function head();
+    public function head(): Job;
 
     /**
      * Возвращает элемент из конца очереди без его удаления.
@@ -37,7 +37,7 @@ interface Queue
      * @return mixed Элемент из начала очереди.
      * @throws UnderflowException Если очередь пуста.
      */
-    public function tail();
+    public function tail(): Job;
 
     /**
      * Возвращает `true`, если очередь пуста, иначе `false`.

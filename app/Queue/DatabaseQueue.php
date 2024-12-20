@@ -2,36 +2,93 @@
 
 namespace App\Queue;
 
+use Illuminate\Support\Str;
+use RuntimeException;
+
 class DatabaseQueue implements Queue
 {
-
-    public function enqueue($item): void
+    public function __construct(
+        protected string $table,
+    )
     {
-        // TODO: Implement enqueue() method.
     }
 
-    public function dequeue()
+
+    public function enqueue(Job $item): void
     {
-        // TODO: Implement dequeue() method.
+        $payload = json_encode($this->getPayload($item), \JSON_UNESCAPED_UNICODE);
+        \DB::table($this->table)->insert([
+            'payload' => $payload,
+            'created_at' => now()->timestamp,
+        ]);
     }
 
-    public function head()
+    protected function getPayload(Job $job): array
     {
-        // TODO: Implement head() method.
+        return [
+            'uuid' => (string) Str::uuid(),
+            'displayName' => $job::class,
+            'job' => 'Illuminate\Queue\CallQueuedHandler@call',
+            'data' => [
+                'commandName' => $job::class,
+                'command' => serialize(clone $job),
+            ],
+        ];
     }
 
-    public function tail()
+    public function dequeue(): Job
     {
-        // TODO: Implement tail() method.
+        $record = $this->getTopRecord();
+        $job = $this->getJob($record);
+        \DB::table($this->table)->where('id', $record->id)->delete();
+
+        return $job;
+    }
+
+    public function head(): Job
+    {
+        return $this->getJob($this->getTopRecord());
+    }
+
+    public function tail(): Job
+    {
+        return$this->getJob($this->getTailRecord());
     }
 
     public function isEmpty(): bool
     {
-        // TODO: Implement isEmpty() method.
+        return \DB::table($this->table)->count() === 0;
     }
 
     public function size(): int
     {
-        // TODO: Implement size() method.
+        return \DB::table($this->table)->count();
+    }
+
+    protected function getJob($record): Job{
+        $payload = json_decode($record->payload, true);
+
+        $job = $this->getCommand($payload['data']);
+
+        return $job;
+    }
+
+    protected function getTopRecord()
+    {
+        return \DB::table($this->table)->orderByDesc('id')->limit(1)->first();
+    }
+
+    protected function getTailRecord()
+    {
+        return \DB::table($this->table)->orderByDesc('id')->limit(1)->first();
+    }
+
+    protected function getCommand(array $data)
+    {
+        if (str_starts_with($data['command'], 'O:')) {
+            return unserialize($data['command']);
+        }
+
+        throw new RuntimeException('Unable to extract job payload.');
     }
 }

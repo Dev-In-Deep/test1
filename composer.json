@@ -8,8 +8,12 @@
         "php": "^8.3",
         "giggsey/libphonenumber-for-php": "^8.13",
         "laravel/framework": "^11.9",
+        "laravel/octane": "^2.6",
         "laravel/tinker": "^2.9",
         "spatie/laravel-data": "^4.11",
+        "spiral/roadrunner": "^2024.3",
+        "spiral/roadrunner-cli": "^2.6",
+        "spiral/roadrunner-http": "^3.5",
         "symfony/intl": "*"
     },
     "require-dev": {

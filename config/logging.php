@@ -54,7 +54,7 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => ['daily', 'socket'],
             'ignore_exceptions' => false,
         ],
 
@@ -125,6 +125,16 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'socket' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => \Monolog\Handler\SocketHandler::class,
+            'formatter' => \Monolog\Formatter\JsonFormatter::class,
+            'handler_with' => [
+                'connectionString' => env('LOG_SOCKET_URL', '127.0.0.1:9913'),
+            ],
         ],
 
     ],

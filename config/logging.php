@@ -63,6 +63,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'bubble' => true,
         ],
 
         'daily' => [
@@ -127,6 +128,24 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'telegram' => [
+            'driver' => 'custom',
+            'via' => App\Logging\TelegramLogging::class,
+            'with' => [
+                'chat_id' => env('TELEGRAM_CHAT_ID', ''),
+                'token' => env('TELEGRAM_TOKEN', ''),
+            ]
+        ],
+
+        'socket' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => \Monolog\Handler\SocketHandler::class,
+            'formatter' => \Monolog\Formatter\JsonFormatter::class,
+            'handler_with' => [
+                'connectionString' => env('LOG_SOCKET_URL', '127.0.0.1:9913'),
+            ],
+        ],
     ],
 
 ];

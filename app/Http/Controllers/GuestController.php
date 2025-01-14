@@ -9,6 +9,7 @@ use App\Http\Resources\GuestCollection;
 use App\Http\Resources\GuestResource;
 use App\Models\Guest;
 use App\Services\CountryService;
+use Database\Factories\GuestFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -21,8 +22,6 @@ class GuestController extends Controller
 
     public function index(): GuestCollection
     {
-        Log::listen();
-        Log::info('User {id} failed to login.', ['id' => $user->id]);
         return new GuestCollection(Guest::all(), $this->countryService);
     }
 

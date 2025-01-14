@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Guest;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 

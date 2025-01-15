@@ -13,6 +13,7 @@ use Database\Factories\GuestFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Laravel\Octane\Facades\Octane;
 
 class GuestController extends Controller
 {

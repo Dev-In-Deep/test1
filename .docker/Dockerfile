@@ -39,8 +39,6 @@ RUN docker-php-ext-install ast
 RUN pecl install -f vld \
     && docker-php-ext-enable vld
 
-ADD php.ini /usr/local/etc/php/conf.d/40-custom.ini
-
 WORKDIR /app
 
 EXPOSE 8000

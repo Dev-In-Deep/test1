@@ -9,6 +9,9 @@ services:
             - ./:/app
         networks:
             - my-network
+        depends_on:
+            - buggregator
+            - pgsql
 
     buggregator:
         container_name: my-buggregator
